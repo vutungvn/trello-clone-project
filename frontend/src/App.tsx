@@ -1,9 +1,11 @@
-import "./App.css";
+import { Toaster } from "sonner";
+import { UsersPage } from "./pages/users/UsersPage";
 
 function App() {
   return (
     <>
-      <h1>Hello world!</h1>
+      <UsersPage />
+      <Toaster position="bottom-right" richColors />
     </>
   );
 }
