@@ -19,6 +19,7 @@ export interface Board {
   title: string;
   visibility: BoardVisibility;
   backgroundColor: BoardBackground;
+  backgroundImageUrl: string | null;
   isArchived: boolean;
 }
 

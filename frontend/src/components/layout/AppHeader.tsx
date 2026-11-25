@@ -1,7 +1,7 @@
 import { ChevronDown } from "lucide-react";
 import { AppLink } from "@/components/common/AppLink";
 import { AppLogo } from "@/components/common/AppLogo";
-import { UserAvatar } from "@/components/common/UserAvatar";
+import { WorkspaceAvatar } from "@/components/common/WorkspaceAvatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,18 +10,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { currentUser, workspaces } from "@/mocks";
+import { currentUser, workspaces as mockWorkspaces } from "@/mocks";
+import type { Workspace } from "@/types/workspace";
+import { AccountMenu } from "./AccountMenu";
+import { CreateMenu } from "./CreateMenu";
 
 interface AppHeaderProps {
   /** light: nền trắng, board: nền tối trong suốt đặt trên màu của bảng */
   variant?: "light" | "board";
+  workspaces?: Workspace[];
 }
 
-export function AppHeader({ variant = "light" }: AppHeaderProps) {
+export function AppHeader({
+  variant = "light",
+  workspaces = mockWorkspaces,
+}: AppHeaderProps) {
   const isBoard = variant === "board";
-  const itemClass = isBoard
-    ? "text-on-primary hover:bg-white/20 hover:text-on-primary aria-expanded:bg-white/20 aria-expanded:text-on-primary"
-    : "text-text-primary";
 
   return (
     <header
@@ -45,33 +49,38 @@ export function AppHeader({ variant = "light" }: AppHeaderProps) {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className={cn("gap-1 px-2", itemClass)}>
+            <Button
+              variant="ghost"
+              className={cn(
+                "gap-1 px-2",
+                isBoard
+                  ? "text-on-primary hover:bg-white/20 hover:text-on-primary aria-expanded:bg-white/20 aria-expanded:text-on-primary"
+                  : "text-text-primary",
+              )}
+            >
               Workspace
               <ChevronDown aria-hidden="true" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-56">
+          <DropdownMenuContent align="start" className="w-60">
+            {workspaces.length === 0 && (
+              <DropdownMenuItem disabled>Chưa có workspace</DropdownMenuItem>
+            )}
             {workspaces.map((workspace) => (
               <DropdownMenuItem key={workspace.id} asChild>
-                <AppLink href={`/w/${workspace.id}`}>{workspace.name}</AppLink>
+                <AppLink href={`/w/${workspace.id}`}>
+                  <WorkspaceAvatar workspace={workspace} size="sm" />
+                  <span className="truncate">{workspace.name}</span>
+                </AppLink>
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Button>Tạo</Button>
+        <CreateMenu workspaces={workspaces} />
       </div>
 
-      <button
-        type="button"
-        aria-label="Mở menu tài khoản"
-        className={cn(
-          "rounded-full outline-none focus-visible:ring-2 focus-visible:ring-focus-ring",
-          isBoard && "ring-2 ring-white/40",
-        )}
-      >
-        <UserAvatar user={currentUser} size="md" />
-      </button>
+      <AccountMenu user={currentUser} isOnBoard={isBoard} />
     </header>
   );
 }

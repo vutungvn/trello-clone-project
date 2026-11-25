@@ -1,7 +1,8 @@
 import { CircleAlert } from "lucide-react";
+import { FormField } from "@/components/common/FormField";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { FormField } from "./FormField";
+import { navigateTo } from "@/lib/navigation";
 import { PasswordInput } from "./PasswordInput";
 
 interface LoginFormProps {
@@ -18,7 +19,10 @@ export function LoginForm({
   return (
     <form
       noValidate
-      onSubmit={(event) => event.preventDefault()}
+      onSubmit={(event) => {
+        event.preventDefault();
+        navigateTo("/");
+      }}
       className="flex flex-col gap-4"
     >
       <FormField id="login-email" label="Email">

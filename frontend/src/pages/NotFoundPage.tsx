@@ -8,6 +8,11 @@ const CONTENT = {
     title: "Không tìm thấy trang",
     description: "Trang này không tồn tại hoặc đã bị xóa.",
   },
+  workspace: {
+    title: "Không tìm thấy Workspace",
+    description:
+      "Workspace này không tồn tại hoặc bạn không phải là thành viên. Hãy nhờ quản trị viên gửi lời mời cho bạn.",
+  },
   board: {
     title: "Không tìm thấy bảng",
     description:

@@ -1,6 +1,7 @@
+import { FormField } from "@/components/common/FormField";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { FormField } from "./FormField";
+import { navigateTo } from "@/lib/navigation";
 import { PasswordInput } from "./PasswordInput";
 
 export interface RegisterDefaultValues {
@@ -22,7 +23,10 @@ export function RegisterForm({
   return (
     <form
       noValidate
-      onSubmit={(event) => event.preventDefault()}
+      onSubmit={(event) => {
+        event.preventDefault();
+        navigateTo("/");
+      }}
       className="flex flex-col gap-4"
     >
       <FormField id="register-name" label="Họ và tên">

@@ -15,6 +15,18 @@ export function getInitials(name: string): string {
   return (first + last).toUpperCase();
 }
 
+const WORKSPACE_COLOR_CLASSES = [
+  "bg-primary text-on-primary",
+  "bg-success text-on-success",
+  "bg-danger text-on-danger",
+];
+
+export function getWorkspaceColorClass(workspaceId: number): string {
+  return WORKSPACE_COLOR_CLASSES[
+    (workspaceId - 1) % WORKSPACE_COLOR_CLASSES.length
+  ];
+}
+
 export function getAvatarColorClass(userId: number): string {
   return AVATAR_COLOR_CLASSES[(userId - 1) % AVATAR_COLOR_CLASSES.length];
 }

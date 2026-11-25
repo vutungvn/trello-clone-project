@@ -69,7 +69,7 @@ export function BoardPage({ params }: BoardPageProps) {
   const openCardList = lists.find((list) => list.id === openCard?.listId);
 
   return (
-    <BoardLayout background={board.backgroundColor}>
+    <BoardLayout background={board}>
       <title>{`${board.title} — TaskFlow`}</title>
       <BoardHeader
         board={board}

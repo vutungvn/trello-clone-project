@@ -8,6 +8,7 @@ export const boards: Board[] = [
     title: "Website bán hàng",
     visibility: "PRIVATE",
     backgroundColor: "blue",
+    backgroundImageUrl: null,
     isArchived: false,
   },
   {
@@ -16,6 +17,7 @@ export const boards: Board[] = [
     title: "Dự án mới",
     visibility: "PRIVATE",
     backgroundColor: "blue",
+    backgroundImageUrl: null,
     isArchived: false,
   },
   {
@@ -24,6 +26,7 @@ export const boards: Board[] = [
     title: "App mobile",
     visibility: "WORKSPACE",
     backgroundColor: "purple",
+    backgroundImageUrl: null,
     isArchived: false,
   },
   {
@@ -32,6 +35,7 @@ export const boards: Board[] = [
     title: "Hạ tầng server",
     visibility: "WORKSPACE",
     backgroundColor: "teal",
+    backgroundImageUrl: null,
     isArchived: false,
   },
   {
@@ -40,6 +44,7 @@ export const boards: Board[] = [
     title: "Tuyển dụng Q4",
     visibility: "WORKSPACE",
     backgroundColor: "orange",
+    backgroundImageUrl: null,
     isArchived: false,
   },
   {
@@ -48,6 +53,7 @@ export const boards: Board[] = [
     title: "Học tiếng Anh",
     visibility: "WORKSPACE",
     backgroundColor: "orange",
+    backgroundImageUrl: null,
     isArchived: false,
   },
   {
@@ -56,6 +62,7 @@ export const boards: Board[] = [
     title: "Kế hoạch du lịch",
     visibility: "WORKSPACE",
     backgroundColor: "pink",
+    backgroundImageUrl: null,
     isArchived: false,
   },
   {
@@ -64,6 +71,7 @@ export const boards: Board[] = [
     title: "Chiến dịch Tết 2027",
     visibility: "WORKSPACE",
     backgroundColor: "slate",
+    backgroundImageUrl: null,
     isArchived: false,
   },
   {
@@ -71,7 +79,8 @@ export const boards: Board[] = [
     workspaceId: 1,
     title: "Landing page cũ",
     visibility: "WORKSPACE",
-    backgroundColor: "pink",
+    backgroundColor: "purple",
+    backgroundImageUrl: null,
     isArchived: true,
   },
   {
@@ -79,7 +88,8 @@ export const boards: Board[] = [
     workspaceId: 1,
     title: "Sprint tháng 9",
     visibility: "WORKSPACE",
-    backgroundColor: "slate",
+    backgroundColor: "teal",
+    backgroundImageUrl: null,
     isArchived: true,
   },
 ];

@@ -1,8 +1,10 @@
 import type { ComponentType } from "react";
 import { matchPath, type PathParams } from "@/lib/match-path";
 import { BoardPage } from "@/pages/BoardPage";
+import { HomePage } from "@/pages/HomePage";
 import { LoginPage } from "@/pages/LoginPage";
 import { RegisterPage } from "@/pages/RegisterPage";
+import { WorkspaceBoardsPage } from "@/pages/WorkspaceBoardsPage";
 
 export interface PageProps {
   params: PathParams;
@@ -16,6 +18,8 @@ interface Route {
 const routes: Route[] = [
   { path: "/login", page: LoginPage },
   { path: "/register", page: RegisterPage },
+  { path: "/", page: HomePage },
+  { path: "/w/:workspaceId", page: WorkspaceBoardsPage },
   { path: "/b/:boardId", page: BoardPage },
 ];
 

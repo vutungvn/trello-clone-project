@@ -4,6 +4,7 @@ import { CircleAlert } from "lucide-react";
 interface FormFieldProps {
   id: string;
   label: string;
+  required?: boolean;
   helper?: string;
   error?: string;
   children: ReactNode;
@@ -13,6 +14,7 @@ interface FormFieldProps {
 export function FormField({
   id,
   label,
+  required = false,
   helper,
   error,
   children,
@@ -24,6 +26,12 @@ export function FormField({
         className="text-xs font-semibold text-text-secondary"
       >
         {label}
+        {required && (
+          <span aria-hidden="true" className="text-danger">
+            {" "}
+            *
+          </span>
+        )}
       </label>
       {children}
       {error ? (
