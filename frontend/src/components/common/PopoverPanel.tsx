@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 interface PopoverPanelProps
   extends Pick<
     ComponentProps<typeof PopoverContent>,
-    "align" | "side" | "className"
+    "align" | "side" | "className" | "onCloseAutoFocus"
   > {
   title: string;
   /** Có thì hiện nút quay lại */
@@ -23,6 +23,7 @@ export function PopoverPanel({
   align = "start",
   side,
   className,
+  onCloseAutoFocus,
   children,
 }: PopoverPanelProps) {
   const titleId = useId();
@@ -34,6 +35,7 @@ export function PopoverPanel({
       sideOffset={8}
       collisionPadding={8}
       aria-labelledby={titleId}
+      onCloseAutoFocus={onCloseAutoFocus}
       className={cn(
         "max-h-(--radix-popover-content-available-height) w-75 gap-3 overflow-y-auto rounded-lg border border-border p-3 shadow-[0_8px_12px_#091E4226] ring-0",
         className,

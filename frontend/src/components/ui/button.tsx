@@ -18,7 +18,7 @@ const buttonVariants = cva(
         destructive:
           "bg-danger text-on-danger hover:bg-danger-hover",
         board:
-          "bg-white/20 text-on-primary hover:bg-white/30 aria-expanded:bg-white/30",
+          "bg-white/20 text-on-primary hover:bg-white/30 aria-expanded:bg-surface aria-expanded:text-text-primary",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {

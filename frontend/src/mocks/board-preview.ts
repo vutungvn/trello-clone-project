@@ -1,35 +1,30 @@
+import { type CardFilter, EMPTY_CARD_FILTER } from "@/lib/card-filter";
 import type { List } from "@/types/board";
 import type { Card } from "@/types/card";
 import { featureLabel, frontendLabel } from "./boards";
 
-/** Tạm thời: dựng các trạng thái của board qua ?state=, gỡ khi có kéo-thả và lọc thật */
-export interface BoardPreview {
+/** Tạm thời: dựng các trạng thái của board qua ?state=, gỡ khi có kéo-thả thật */
+export interface DragPreview {
   lists: List[];
   cards: Card[];
-  filterCount: number;
   draggingCardId?: number;
   draggingListId?: number;
 }
 
 const DRAGGING_CARD_ID = 5;
 const DRAGGING_LIST_ID = 3;
-const FILTER_LABEL_IDS = [featureLabel.id, frontendLabel.id];
 
-export function getBoardPreview(
+export function getPreviewFilter(state: string | null): CardFilter {
+  return state === "filtered"
+    ? { ...EMPTY_CARD_FILTER, labelIds: [featureLabel.id, frontendLabel.id] }
+    : EMPTY_CARD_FILTER;
+}
+
+export function getDragPreview(
   state: string | null,
   lists: List[],
   cards: Card[],
-): BoardPreview {
-  if (state === "filtered") {
-    return {
-      lists,
-      cards: cards.filter((card) =>
-        card.labels.some((label) => FILTER_LABEL_IDS.includes(label.id)),
-      ),
-      filterCount: FILTER_LABEL_IDS.length,
-    };
-  }
-
+): DragPreview {
   // Thẻ VNPay đang ở giữa hai thẻ của "Đang review"
   if (state === "drag-card") {
     const draggingCard = cards.find((card) => card.id === DRAGGING_CARD_ID);
@@ -39,7 +34,6 @@ export function getBoardPreview(
       return {
         lists,
         cards: others.toSpliced(targetIndex, 0, { ...draggingCard, listId: 3 }),
-        filterCount: 0,
         draggingCardId: DRAGGING_CARD_ID,
       };
     }
@@ -53,11 +47,10 @@ export function getBoardPreview(
       return {
         lists: others.toSpliced(1, 0, draggingList),
         cards,
-        filterCount: 0,
         draggingListId: DRAGGING_LIST_ID,
       };
     }
   }
 
-  return { lists, cards, filterCount: 0 };
+  return { lists, cards };
 }

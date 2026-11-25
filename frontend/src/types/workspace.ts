@@ -28,3 +28,16 @@ export interface WorkspaceInvitation {
   invitedBy: User;
   expiresAt: string;
 }
+
+/** Thông tin hiện cho người mở link mời */
+export interface InvitationDetail {
+  token: string;
+  email: string;
+  role: WorkspaceRole;
+  status: InvitationStatus;
+  invitedBy: User;
+  expiresAt: string;
+  workspace: Workspace;
+  memberCount: number;
+  boardCount: number;
+}

@@ -112,6 +112,14 @@ export const cards: Card[] = [
       isCompleted: true,
     },
     { id: 12, title: "Khởi tạo dự án" },
+    {
+      id: 13,
+      title: "Banner khuyến mãi tháng 10",
+      labels: [featureLabel],
+      isArchived: true,
+    },
+    { id: 14, title: "Sửa lỗi footer", labels: [bugLabel], isArchived: true },
+    { id: 15, title: "Khảo sát người dùng", isArchived: true },
   ]),
 ];
 

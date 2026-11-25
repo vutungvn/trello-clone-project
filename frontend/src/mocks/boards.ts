@@ -121,6 +121,7 @@ export const lists: List[] = [
     position: 262144,
     isArchived: false,
   },
+  { id: 5, boardId: 1, title: "Ý tưởng", position: 327680, isArchived: true },
 ];
 
 export const featureLabel: Label = {

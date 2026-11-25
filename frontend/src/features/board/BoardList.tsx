@@ -1,10 +1,14 @@
-import { Ellipsis, Plus } from "lucide-react";
+import { useState } from "react";
+import { Plus } from "lucide-react";
+import { EditableText } from "@/components/common/EditableText";
 import { Button } from "@/components/ui/button";
+import { AddCardForm } from "@/features/card/AddCardForm";
 import { CardItem } from "@/features/card/CardItem";
 import { CardPlaceholder } from "@/features/card/CardPlaceholder";
 import { cn } from "@/lib/utils";
 import type { List } from "@/types/board";
 import type { Card } from "@/types/card";
+import { ListMenu } from "./ListMenu";
 
 interface BoardListProps {
   list: List;
@@ -27,6 +31,9 @@ export function BoardList({
   draggingCardId,
   isOverlay = false,
 }: BoardListProps) {
+  const [isRenaming, setIsRenaming] = useState(false);
+  const [isAddingCard, setIsAddingCard] = useState(false);
+
   return (
     <section
       aria-label={list.title}
@@ -37,18 +44,22 @@ export function BoardList({
           : "max-h-full shadow-sm",
       )}
     >
-      <div className="flex items-center justify-between px-2 py-1">
-        <h2 className="min-w-0 truncate text-sm font-semibold text-text-primary">
-          {list.title}
+      <div className="flex items-center justify-between gap-1.5 py-1 pr-2">
+        <h2 className="min-w-0 flex-1 text-sm font-semibold text-text-primary">
+          <EditableText
+            value={list.title}
+            label="Tên danh sách"
+            className="h-7 px-2"
+            buttonClassName="block truncate"
+            isEditing={isRenaming}
+            onEditingChange={setIsRenaming}
+          />
         </h2>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          aria-label={`Tùy chọn danh sách ${list.title}`}
-          className="hover:bg-neutral-hover"
-        >
-          <Ellipsis aria-hidden="true" />
-        </Button>
+        <ListMenu
+          listTitle={list.title}
+          onAddCard={() => setIsAddingCard(true)}
+          onRename={() => setIsRenaming(true)}
+        />
       </div>
 
       {/* p-0.5 chừa chỗ cho viền xanh khi hover, nếu không sẽ bị vùng cuộn cắt */}
@@ -75,13 +86,18 @@ export function BoardList({
         </p>
       )}
 
-      <Button
-        variant="ghost"
-        className="mt-1 w-full justify-start rounded-lg px-2 hover:bg-neutral-hover"
-      >
-        <Plus aria-hidden="true" />
-        Thêm thẻ
-      </Button>
+      {isAddingCard ? (
+        <AddCardForm onClose={() => setIsAddingCard(false)} />
+      ) : (
+        <Button
+          variant="ghost"
+          onClick={() => setIsAddingCard(true)}
+          className="mt-1 w-full justify-start rounded-lg px-2 hover:bg-neutral-hover"
+        >
+          <Plus aria-hidden="true" />
+          Thêm thẻ
+        </Button>
+      )}
     </section>
   );
 }

@@ -1,5 +1,6 @@
 export * from "./boards";
 export * from "./cards";
+export * from "./invitations";
 export * from "./users";
 export * from "./workspaces";
 

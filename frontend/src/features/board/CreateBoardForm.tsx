@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check, Lock, Users } from "lucide-react";
+import { Lock, Users } from "lucide-react";
 import { FormField } from "@/components/common/FormField";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,15 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  BOARD_BACKGROUND_CLASS,
-  BOARD_BACKGROUND_IMAGES,
-  BOARD_BACKGROUNDS,
-  type BoardBackgroundChoice,
-} from "@/lib/board-backgrounds";
-import { cn } from "@/lib/utils";
+import type { BoardBackgroundChoice } from "@/lib/board-backgrounds";
 import type { BoardVisibility } from "@/types/board";
 import type { Workspace } from "@/types/workspace";
+import { BackgroundPicker } from "./BackgroundPicker";
 import { BoardThumbnail } from "./BoardThumbnail";
 
 const VISIBILITY_OPTIONS = [
@@ -37,9 +32,6 @@ const VISIBILITY_OPTIONS = [
     iconClass: "text-danger",
   },
 ] satisfies { value: BoardVisibility; [key: string]: unknown }[];
-
-const SWATCH_CLASS =
-  "overflow-hidden rounded-sm outline-none hover:opacity-90 focus-visible:ring-2 focus-visible:ring-text-primary aria-pressed:ring-2 aria-pressed:ring-focus-ring aria-pressed:ring-offset-1";
 
 interface CreateBoardFormProps {
   workspaces: Workspace[];
@@ -75,50 +67,7 @@ export function CreateBoardForm({
         <legend className="mb-2 text-xs font-semibold text-text-secondary">
           Phông nền
         </legend>
-        <div className="grid grid-cols-4 gap-1.5">
-          {BOARD_BACKGROUND_IMAGES.map((image) => (
-            <button
-              key={image.url}
-              type="button"
-              aria-label={`Ảnh nền ${image.name}`}
-              aria-pressed={background.backgroundImageUrl === image.url}
-              onClick={() =>
-                setBackground({ ...background, backgroundImageUrl: image.url })
-              }
-              className={cn("h-10 border border-border", SWATCH_CLASS)}
-            >
-              <img src={image.url} alt="" className="size-full object-cover" />
-            </button>
-          ))}
-        </div>
-        <div className="grid grid-cols-6 gap-1.5">
-          {BOARD_BACKGROUNDS.map((color) => {
-            const isSelected =
-              background.backgroundImageUrl === null &&
-              background.backgroundColor === color.value;
-            return (
-              <button
-                key={color.value}
-                type="button"
-                aria-label={`Màu ${color.name}`}
-                aria-pressed={isSelected}
-                onClick={() =>
-                  setBackground({
-                    backgroundColor: color.value,
-                    backgroundImageUrl: null,
-                  })
-                }
-                className={cn(
-                  "inline-flex h-8 items-center justify-center text-on-primary",
-                  SWATCH_CLASS,
-                  BOARD_BACKGROUND_CLASS[color.value],
-                )}
-              >
-                {isSelected && <Check aria-hidden="true" className="size-4" />}
-              </button>
-            );
-          })}
-        </div>
+        <BackgroundPicker value={background} onChange={setBackground} />
       </fieldset>
 
       <FormField id="board-title" label="Tiêu đề bảng" required>

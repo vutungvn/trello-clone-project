@@ -6,14 +6,28 @@ interface EditableTextProps {
   /** Tên của ô nhập cho trình đọc màn hình */
   label: string;
   className?: string;
+  /** Chỉ áp dụng khi chưa sửa */
+  buttonClassName?: string;
+  /** Truyền cả hai để điều khiển từ bên ngoài */
+  isEditing?: boolean;
+  onEditingChange?: (isEditing: boolean) => void;
 }
 
 /**
  * Bấm vào chữ để sửa tại chỗ, Enter, Esc hoặc rời ô nhập thì đóng.
  * Hiện chưa lưu giá trị mới.
  */
-export function EditableText({ value, label, className }: EditableTextProps) {
-  const [isEditing, setIsEditing] = useState(false);
+export function EditableText({
+  value,
+  label,
+  className,
+  buttonClassName,
+  isEditing: controlledIsEditing,
+  onEditingChange,
+}: EditableTextProps) {
+  const [innerIsEditing, setInnerIsEditing] = useState(false);
+  const isEditing = controlledIsEditing ?? innerIsEditing;
+  const setIsEditing = onEditingChange ?? setInnerIsEditing;
 
   if (isEditing) {
     return (
@@ -44,6 +58,7 @@ export function EditableText({ value, label, className }: EditableTextProps) {
       className={cn(
         "max-w-full cursor-text rounded-sm text-left outline-none hover:bg-neutral-hover focus-visible:ring-2 focus-visible:ring-focus-ring",
         className,
+        buttonClassName,
       )}
     >
       {value}
