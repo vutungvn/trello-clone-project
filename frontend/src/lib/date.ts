@@ -1,4 +1,9 @@
-import { differenceInCalendarDays, format } from "date-fns";
+import {
+  differenceInCalendarDays,
+  differenceInHours,
+  differenceInMinutes,
+  format,
+} from "date-fns";
 
 export type DueStatus = "completed" | "overdue" | "soon" | "normal";
 
@@ -15,8 +20,26 @@ export function formatShortDateTime(iso: string): string {
 }
 
 /** "12/01/2026" */
-export function formatDate(iso: string): string {
-  return format(new Date(iso), "dd/MM/yyyy");
+export function formatDate(date: Date | string): string {
+  return format(new Date(date), "dd/MM/yyyy");
+}
+
+/** "17:00" */
+export function formatTime(date: Date | string): string {
+  return format(new Date(date), "HH:mm");
+}
+
+/** "5 phút trước", "2 giờ trước", "Hôm qua lúc 16:20", "20 thg 11, 16:20" */
+export function formatRelativeTime(iso: string, now: Date): string {
+  const date = new Date(iso);
+  const days = differenceInCalendarDays(now, date);
+  if (days === 1) return `Hôm qua lúc ${formatTime(date)}`;
+  if (days > 1) return formatShortDateTime(iso);
+
+  const hours = differenceInHours(now, date);
+  if (hours >= 1) return `${hours} giờ trước`;
+  const minutes = differenceInMinutes(now, date);
+  return minutes >= 1 ? `${minutes} phút trước` : "Vừa xong";
 }
 
 export function getDueStatus(

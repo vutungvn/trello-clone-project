@@ -11,6 +11,7 @@ interface BoardCanvasProps {
   /** Đã sắp theo position */
   cards: Card[];
   now: Date;
+  onOpenCard: (cardId: number) => void;
   isFiltering?: boolean;
   draggingCardId?: number;
   draggingListId?: number;
@@ -22,6 +23,7 @@ export function BoardCanvas({
   lists,
   cards,
   now,
+  onOpenCard,
   isFiltering,
   draggingCardId,
   draggingListId,
@@ -39,6 +41,7 @@ export function BoardCanvas({
               list={list}
               cards={cards.filter((card) => card.listId === list.id)}
               now={now}
+              onOpenCard={onOpenCard}
               isFiltering={isFiltering}
               draggingCardId={draggingCardId}
             />

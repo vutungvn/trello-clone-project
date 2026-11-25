@@ -8,11 +8,17 @@ import { DueDateBadge } from "./DueDateBadge";
 interface CardItemProps {
   card: Card;
   now: Date;
+  onOpen?: (cardId: number) => void;
   /** Bản đang được kéo, nổi trên board */
   isOverlay?: boolean;
 }
 
-export function CardItem({ card, now, isOverlay = false }: CardItemProps) {
+export function CardItem({
+  card,
+  now,
+  onOpen,
+  isOverlay = false,
+}: CardItemProps) {
   const hasBadges =
     card.dueDate !== null || card.description !== null || card.commentCount > 0;
   const hasFooter = hasBadges || card.assignees.length > 0;
@@ -23,7 +29,7 @@ export function CardItem({ card, now, isOverlay = false }: CardItemProps) {
         "group/card relative flex flex-col gap-1.5 rounded-lg bg-surface px-3 py-2",
         isOverlay
           ? "w-64 rotate-4 cursor-grabbing shadow-[0_12px_24px_rgba(9,30,66,0.32)]"
-          : "shadow-[0_1px_1px_#091E4240] focus-within:ring-2 focus-within:ring-focus-ring hover:ring-2 hover:ring-focus-ring",
+          : "shadow-[0_1px_1px_#091E4240] hover:ring-2 hover:ring-focus-ring has-focus-visible:ring-2 has-focus-visible:ring-focus-ring",
       )}
     >
       {!isOverlay && (
@@ -46,6 +52,7 @@ export function CardItem({ card, now, isOverlay = false }: CardItemProps) {
       {/* Vùng bấm của nút phủ kín cả thẻ */}
       <button
         type="button"
+        onClick={() => onOpen?.(card.id)}
         className="text-left text-sm text-text-primary outline-none after:absolute after:inset-0 after:rounded-lg"
       >
         {card.title}

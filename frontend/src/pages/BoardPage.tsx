@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { BoardLayout } from "@/components/layout/BoardLayout";
 import { BoardCanvas } from "@/features/board/BoardCanvas";
 import { BoardHeader } from "@/features/board/BoardHeader";
 import { BoardList } from "@/features/board/BoardList";
+import { CardDetailDialog } from "@/features/card/CardDetailDialog";
 import { CardItem } from "@/features/card/CardItem";
 import type { PathParams } from "@/lib/match-path";
 import { getPreviewState } from "@/lib/preview-state";
@@ -9,6 +11,9 @@ import {
   boardMembers,
   boards,
   cards,
+  comments,
+  currentUser,
+  labels,
   lists,
   MOCK_NOW,
   workspaceMembers,
@@ -38,6 +43,8 @@ interface BoardPageProps {
 }
 
 export function BoardPage({ params }: BoardPageProps) {
+  const [openCardId, setOpenCardId] = useState<number | null>(null);
+
   const board = boards.find((item) => item.id === Number(params.boardId));
   if (!board || board.isArchived) return <NotFoundPage kind="board" />;
 
@@ -57,12 +64,16 @@ export function BoardPage({ params }: BoardPageProps) {
     (list) => list.id === preview.draggingListId,
   );
 
+  const members = getMembers(board);
+  const openCard = preview.cards.find((card) => card.id === openCardId);
+  const openCardList = lists.find((list) => list.id === openCard?.listId);
+
   return (
     <BoardLayout background={board.backgroundColor}>
       <title>{`${board.title} — TaskFlow`}</title>
       <BoardHeader
         board={board}
-        members={getMembers(board)}
+        members={members}
         filterCount={preview.filterCount}
         visibleCardCount={preview.cards.length}
         clearFilterHref={`/b/${board.id}`}
@@ -71,6 +82,7 @@ export function BoardPage({ params }: BoardPageProps) {
         lists={preview.lists}
         cards={preview.cards}
         now={MOCK_NOW}
+        onOpenCard={setOpenCardId}
         isFiltering={preview.filterCount > 0}
         draggingCardId={preview.draggingCardId}
         draggingListId={preview.draggingListId}
@@ -96,6 +108,21 @@ export function BoardPage({ params }: BoardPageProps) {
           </>
         }
       />
+      {openCard && openCardList && (
+        <CardDetailDialog
+          key={openCard.id}
+          card={openCard}
+          listTitle={openCardList.title}
+          members={members}
+          boardLabels={labels.filter((label) => label.boardId === board.id)}
+          comments={comments
+            .filter((comment) => comment.cardId === openCard.id)
+            .sort((a, b) => b.createdAt.localeCompare(a.createdAt))}
+          currentUser={currentUser}
+          now={MOCK_NOW}
+          onClose={() => setOpenCardId(null)}
+        />
+      )}
     </BoardLayout>
   );
 }

@@ -12,3 +12,21 @@ export const LABEL_COLOR_CLASS: Record<LabelColor, string> = {
   pink: "bg-label-pink",
   gray: "bg-label-gray",
 };
+
+/** Thứ tự hiển thị trong bảng chọn màu */
+export const LABEL_COLORS: { value: LabelColor; name: string }[] = [
+  { value: "green", name: "xanh lá" },
+  { value: "yellow", name: "vàng" },
+  { value: "orange", name: "cam" },
+  { value: "red", name: "đỏ" },
+  { value: "purple", name: "tím" },
+  { value: "blue", name: "xanh dương" },
+  { value: "sky", name: "xanh da trời" },
+  { value: "lime", name: "xanh chanh" },
+  { value: "pink", name: "hồng" },
+  { value: "gray", name: "xám" },
+];
+
+export function getLabelColorName(color: LabelColor): string {
+  return LABEL_COLORS.find((item) => item.value === color)?.name ?? color;
+}

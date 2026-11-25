@@ -10,6 +10,7 @@ interface BoardListProps {
   list: List;
   cards: Card[];
   now: Date;
+  onOpenCard?: (cardId: number) => void;
   isFiltering?: boolean;
   /** Thẻ đang được kéo, chỗ của nó hiện ô nét đứt */
   draggingCardId?: number;
@@ -21,6 +22,7 @@ export function BoardList({
   list,
   cards,
   now,
+  onOpenCard,
   isFiltering = false,
   draggingCardId,
   isOverlay = false,
@@ -56,7 +58,12 @@ export function BoardList({
             card.id === draggingCardId ? (
               <CardPlaceholder key={card.id} />
             ) : (
-              <CardItem key={card.id} card={card} now={now} />
+              <CardItem
+                key={card.id}
+                card={card}
+                now={now}
+                onOpen={onOpenCard}
+              />
             ),
           )}
         </div>
