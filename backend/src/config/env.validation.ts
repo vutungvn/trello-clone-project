@@ -17,7 +17,7 @@ export class EnvironmentVariables {
   @Min(1)
   @IsInt()
   @Type(() => Number) // .env luôn là chuỗi nên phải đổi sang số
-  PORT: number;
+  PORT: number = 3000;
 }
 
 export function validateEnv(
