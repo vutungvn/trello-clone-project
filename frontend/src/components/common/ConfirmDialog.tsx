@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 import { TriangleAlert } from "lucide-react";
 import {
   AlertDialog,
@@ -9,6 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Input } from "@/components/ui/input";
 
 interface ConfirmDialogProps {
   /** Nút mở hộp thoại */
@@ -16,16 +17,18 @@ interface ConfirmDialogProps {
   title: string;
   description: string;
   confirmLabel?: string;
+  cancelLabel?: string;
+  /** Có thì phải gõ đúng chữ này mới xác nhận được */
+  confirmText?: string;
   onConfirm?: () => void;
 }
 
-/** Hộp thoại xác nhận cho các hành động xóa */
+/** Hộp thoại xác nhận cho các hành động không hoàn tác được */
 export function ConfirmDialog({
   trigger,
   title,
   description,
-  confirmLabel = "Xóa",
-  onConfirm,
+  ...footerProps
 }: ConfirmDialogProps) {
   return (
     <AlertDialog>
@@ -44,14 +47,49 @@ export function ConfirmDialog({
             </AlertDialogDescription>
           </div>
         </div>
-
-        <div className="flex items-center justify-end gap-2 border-t border-border pt-3">
-          <AlertDialogCancel variant="ghost">Hủy</AlertDialogCancel>
-          <AlertDialogAction variant="destructive" onClick={onConfirm}>
-            {confirmLabel}
-          </AlertDialogAction>
-        </div>
+        <ConfirmFooter {...footerProps} />
       </AlertDialogContent>
     </AlertDialog>
+  );
+}
+
+/** Tách riêng để chữ đã gõ được xóa mỗi lần đóng hộp thoại */
+function ConfirmFooter({
+  confirmLabel = "Xóa",
+  cancelLabel = "Hủy",
+  confirmText,
+  onConfirm,
+}: Omit<ConfirmDialogProps, "trigger" | "title" | "description">) {
+  const [typedText, setTypedText] = useState("");
+  const isBlocked = confirmText !== undefined && typedText !== confirmText;
+
+  return (
+    <>
+      {confirmText !== undefined && (
+        <label className="flex flex-col gap-1.5 text-xs font-semibold text-text-secondary">
+          <span>
+            Nhập <span className="text-text-primary">{confirmText}</span> để xác
+            nhận
+          </span>
+          <Input
+            placeholder={confirmText}
+            value={typedText}
+            onChange={(event) => setTypedText(event.target.value)}
+            className="font-normal"
+          />
+        </label>
+      )}
+      <div className="flex items-center justify-end gap-2 border-t border-border pt-3">
+        <AlertDialogCancel variant="ghost">{cancelLabel}</AlertDialogCancel>
+        <AlertDialogAction
+          variant="destructive"
+          disabled={isBlocked}
+          onClick={onConfirm}
+          className="disabled:bg-neutral-subtle disabled:text-text-secondary disabled:opacity-100"
+        >
+          {confirmLabel}
+        </AlertDialogAction>
+      </div>
+    </>
   );
 }

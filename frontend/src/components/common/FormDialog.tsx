@@ -17,8 +17,9 @@ interface FormDialogProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   title: string;
-  description: string;
+  description?: string;
   submitLabel: string;
+  isSubmitDisabled?: boolean;
   className?: string;
   children: ReactNode;
 }
@@ -31,6 +32,7 @@ export function FormDialog({
   title,
   description,
   submitLabel,
+  isSubmitDisabled = false,
   className,
   children,
 }: FormDialogProps) {
@@ -42,6 +44,8 @@ export function FormDialog({
       {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
       <DialogContent
         showCloseButton={false}
+        // Không có mô tả thì báo cho Radix biết là cố ý
+        {...(!description && { "aria-describedby": undefined })}
         className={cn(
           "max-h-[calc(100vh-2rem)] gap-0 overflow-y-auto border border-border p-0 shadow-[0_12px_24px_rgba(9,30,66,0.35)] ring-0 sm:max-w-120",
           className,
@@ -57,9 +61,11 @@ export function FormDialog({
             <DialogTitle className="pr-8 text-lg leading-6 font-bold text-text-primary">
               {title}
             </DialogTitle>
-            <DialogDescription className="mt-1 text-sm text-text-secondary">
-              {description}
-            </DialogDescription>
+            {description && (
+              <DialogDescription className="mt-1 text-sm text-text-secondary">
+                {description}
+              </DialogDescription>
+            )}
             <DialogClose asChild>
               <Button
                 variant="ghost"
@@ -80,7 +86,7 @@ export function FormDialog({
                 Hủy
               </Button>
             </DialogClose>
-            <Button type="submit" className="px-4">
+            <Button type="submit" disabled={isSubmitDisabled} className="px-4">
               {submitLabel}
             </Button>
           </footer>

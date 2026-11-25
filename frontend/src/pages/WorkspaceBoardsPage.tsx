@@ -6,7 +6,9 @@ import { BoardTile } from "@/features/board/BoardTile";
 import { CreateBoardPopover } from "@/features/board/CreateBoardPopover";
 import { CreateBoardTile } from "@/features/board/CreateBoardTile";
 import type { PathParams } from "@/lib/match-path";
-import { boards, currentUser, workspaceMembers, workspaces } from "@/mocks";
+import { matchesKeyword } from "@/lib/text";
+import { boards, workspaces } from "@/mocks";
+import { findWorkspaceAccess } from "@/mocks/workspace-access";
 import { NotFoundPage } from "./NotFoundPage";
 
 interface WorkspaceBoardsPageProps {
@@ -16,33 +18,20 @@ interface WorkspaceBoardsPageProps {
 export function WorkspaceBoardsPage({ params }: WorkspaceBoardsPageProps) {
   const [keyword, setKeyword] = useState("");
 
-  const workspace = workspaces.find(
-    (item) => item.id === Number(params.workspaceId),
-  );
-  const members = workspaceMembers.filter(
-    (member) => member.workspaceId === workspace?.id,
-  );
-  const membership = members.find(
-    (member) => member.user.id === currentUser.id,
-  );
-  if (!workspace || !membership) return <NotFoundPage kind="workspace" />;
+  const access = findWorkspaceAccess(params.workspaceId);
+  if (!access) return <NotFoundPage kind="workspace" />;
 
+  const { workspace, members, role } = access;
   const workspaceBoards = boards.filter(
     (board) => board.workspaceId === workspace.id,
   );
   const visibleBoards = workspaceBoards.filter(
-    (board) =>
-      !board.isArchived &&
-      board.title.toLowerCase().includes(keyword.trim().toLowerCase()),
+    (board) => !board.isArchived && matchesKeyword(board.title, keyword),
   );
   const archivedBoards = workspaceBoards.filter((board) => board.isArchived);
 
   return (
-    <WorkspaceLayout
-      workspace={workspace}
-      role={membership.role}
-      memberCount={members.length}
-    >
+    <WorkspaceLayout workspace={workspace} role={role} members={members}>
       <title>{`${workspace.name} — TaskFlow`}</title>
       <SearchInput
         label="Tìm bảng"

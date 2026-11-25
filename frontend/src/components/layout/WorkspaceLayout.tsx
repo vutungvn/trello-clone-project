@@ -4,31 +4,34 @@ import { AppLink } from "@/components/common/AppLink";
 import { RoleBadge } from "@/components/common/RoleBadge";
 import { WorkspaceAvatar } from "@/components/common/WorkspaceAvatar";
 import { Button } from "@/components/ui/button";
+import { InviteMemberDialog } from "@/features/workspace/InviteMemberDialog";
 import { getCurrentPath } from "@/lib/navigation";
+import { canManageWorkspace } from "@/lib/permissions";
 import { cn } from "@/lib/utils";
-import type { Workspace, WorkspaceRole } from "@/types/workspace";
+import { users } from "@/mocks";
+import type { Workspace, WorkspaceMember, WorkspaceRole } from "@/types/workspace";
 import { MainLayout } from "./MainLayout";
 
 interface WorkspaceLayoutProps {
   workspace: Workspace;
   /** Vai trò của người đang đăng nhập */
   role: WorkspaceRole;
-  memberCount: number;
+  members: WorkspaceMember[];
   children: ReactNode;
 }
 
 export function WorkspaceLayout({
   workspace,
   role,
-  memberCount,
+  members,
   children,
 }: WorkspaceLayoutProps) {
-  const canManage = role !== "MEMBER";
+  const canManage = canManageWorkspace(role);
   const path = getCurrentPath();
   const basePath = `/w/${workspace.id}`;
   const tabs = [
     { label: "Bảng", href: basePath },
-    { label: `Thành viên (${memberCount})`, href: `${basePath}/members` },
+    { label: `Thành viên (${members.length})`, href: `${basePath}/members` },
     { label: "Cài đặt", href: `${basePath}/settings` },
   ];
 
@@ -66,10 +69,16 @@ export function WorkspaceLayout({
           </div>
 
           {canManage && (
-            <Button>
-              <UserPlus aria-hidden="true" />
-              Mời thành viên
-            </Button>
+            <InviteMemberDialog
+              users={users}
+              members={members}
+              trigger={
+                <Button>
+                  <UserPlus aria-hidden="true" />
+                  Mời thành viên
+                </Button>
+              }
+            />
           )}
         </header>
 

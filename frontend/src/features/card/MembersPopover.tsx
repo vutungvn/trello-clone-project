@@ -4,6 +4,7 @@ import { PopoverPanel } from "@/components/common/PopoverPanel";
 import { UserAvatar } from "@/components/common/UserAvatar";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
+import { matchesKeyword } from "@/lib/text";
 import type { User } from "@/types/user";
 
 interface MembersPopoverProps {
@@ -39,9 +40,7 @@ function MemberPicker({
   );
 
   const visibleMembers = members.filter((user) =>
-    `${user.name} ${user.email}`
-      .toLowerCase()
-      .includes(keyword.trim().toLowerCase()),
+    matchesKeyword(`${user.name} ${user.email}`, keyword),
   );
 
   function toggle(userId: number) {

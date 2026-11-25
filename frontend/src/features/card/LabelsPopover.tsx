@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { getLabelColorName } from "@/lib/labels";
+import { matchesKeyword } from "@/lib/text";
 import type { Label } from "@/types/board";
 import { LabelForm } from "./LabelForm";
 
@@ -76,7 +77,7 @@ function LabelPicker({
   const [keyword, setKeyword] = useState("");
 
   const visibleLabels = boardLabels.filter((label) =>
-    (label.name ?? "").toLowerCase().includes(keyword.trim().toLowerCase()),
+    matchesKeyword(label.name ?? "", keyword),
   );
 
   return (

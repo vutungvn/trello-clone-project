@@ -42,6 +42,19 @@ export function formatRelativeTime(iso: string, now: Date): string {
   return minutes >= 1 ? `${minutes} phút trước` : "Vừa xong";
 }
 
+/** "Còn 5 ngày", "Hết hạn hôm nay", "Đã hết hạn" */
+export function getInvitationExpiry(
+  expiresAt: string,
+  now: Date,
+): { text: string; isUrgent: boolean } {
+  const expiry = new Date(expiresAt);
+  if (expiry < now) return { text: "Đã hết hạn", isUrgent: true };
+  const days = differenceInCalendarDays(expiry, now);
+  return days === 0
+    ? { text: "Hết hạn hôm nay", isUrgent: true }
+    : { text: `Còn ${days} ngày`, isUrgent: false };
+}
+
 export function getDueStatus(
   dueDate: string,
   isCompleted: boolean,

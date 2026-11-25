@@ -11,4 +11,9 @@ export const dung = createUser(4, "Phạm Minh Dũng", "dung.pham@example.com");
 export const ha = createUser(5, "Hoàng Thu Hà", "ha.hoang@example.com");
 export const khanh = createUser(6, "Vũ Quốc Khánh", "khanh.vu@example.com");
 
+/** Có tài khoản nhưng chưa ở workspace nào */
+export const huy = createUser(7, "Trần Quốc Huy", "huy.tran@example.com");
+
+export const users: User[] = [an, binh, cuong, dung, ha, khanh, huy];
+
 export const currentUser = an;
